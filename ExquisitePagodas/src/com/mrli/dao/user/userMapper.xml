@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--映射文件   针对当前操作的表编写与sql语句进行处理-->
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--映射文件的根节点    namespace：映射文件的路径，命名空间-->
+<mapper namespace="com.mrli.dao.user.userMapper">
+    <!-- 配置缓存的使用
+     eviction:存放形式 FIFO(先进先出) / LRU(最少使用)
+     flushInterval: 缓存的过期时间
+     size:缓存的对象个数
+     readOnly:是否只读
+     -->
+	<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"></cache>
+
+	<select id="getUser" parameterType="com.mrli.entity.User" resultType="java.lang.Integer">
+		select * from user where userName=#{userName} and userPassword=#{userPassword}
+	</select>
+
+	<!--查询单个用户-->
+	<resultMap id="OneUserList" type="com.mrli.entity.User">
+		<result property="userName" column="userName"></result>
+		<result property="gender" column="gender"></result>
+		<result property="birthday" column="birthday"></result>
+		<result property="phone" column="phone"></result>
+		<result property="address" column="address"></result>
+		<result property="userRole" column="userRole"></result>
+		<result property="creationDate" column="creationDate"></result>
+		<result property="briefIntroduction" column="briefIntroduction"></result>
+	</resultMap>
+	<select id="getUserList" parameterType="com.mrli.entity.User" resultMap="OneUserList">
+		select * from user where id=#{id}
+	</select>
+
+</mapper>
